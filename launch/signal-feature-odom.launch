@@ -1,0 +1,4 @@
+<launch>
+    <node name="signal_image_keypoints_odom_node" pkg="signal-image-keypoints-odom" type="signal_image_keypoints_odom_node" respawn="true" output="screen" /> 
+    <!--- <launch-prefix="xterm -e gdb args" /> -->
+</launch>
