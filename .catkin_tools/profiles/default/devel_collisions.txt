@@ -1,1 +1,0 @@
-/home/xianjia/ws-lidar-as-camera-odom/devel/./cmake.lock 1

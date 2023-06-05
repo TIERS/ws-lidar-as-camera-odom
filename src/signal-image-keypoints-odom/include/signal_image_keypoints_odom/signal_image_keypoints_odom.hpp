@@ -61,7 +61,7 @@ private:
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr keyPointsPtr_{new pcl::PointCloud<pcl::PointXYZ>};
 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr keyPointCloudPtr_{new pcl::PointCloud<pcl::PointXYZ>};
+    // pcl::PointCloud<pcl::PointXYZ>::Ptr keyPointCloudPtr_{new pcl::PointCloud<pcl::PointXYZ>};
 
     cv::Mat img_;
 

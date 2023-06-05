@@ -65,7 +65,8 @@ void lidarImageKeypointOdom::signalImageCallback(const sensor_msgs::ImageConstPt
     }
     ROS_INFO(">>>>>>>> sigal images received!!! >>>>>>>>>");
 }
-
+ 
+// TODO: check time difference between two frames of data, if too big, stop update the keypoint
 void lidarImageKeypointOdom::timerCallback(const ros::TimerEvent& event){
     if(img_.empty() | entirePointCloudPtr_->empty()){
         ROS_WARN("Either no image or no point cloud input!");
@@ -101,55 +102,39 @@ void lidarImageKeypointOdom::timerCallback(const ros::TimerEvent& event){
         }
     }
 
-	// //Initialize the python instance
-	// Py_Initialize();
-	
-	// //Run a simple string
-	// PyRun_SimpleString("from time import time,ctime\n"
-	// 					"print('Today is',ctime(time()))\n");
+    pcl::PointCloud<pcl::PointXYZ>::Ptr keyPointCloudPtr{new pcl::PointCloud<pcl::PointXYZ>};
 
-	// //Run a simple file
-	// FILE* PScriptFile = fopen("/home/xianjia/temp_ws/src/signal-image-keypoints-odom/script/test.py", "r");
-	// if(PScriptFile){
-	// 	PyRun_SimpleFile(PScriptFile, "/home/xianjia/temp_ws/src/signal-image-keypoints-odom/script/test.py");
-	// 	fclose(PScriptFile);
-	// }
+    // cv::Mat output;
+    // std::string output_name = "/home/xianjia/img-" + std::to_string(cnt_)+".jpg";
+    // std::cout << output_name << std::endl;
+    // cv::drawKeypoints(mp, keypoints,output);
+    // cv::imwrite(output_name, output);
+    cnt_ = cnt_+ 1;
 
-	// //Run a python function
-	// PyObject *pName, *pModule, *pFunc, *pArgs, *pValue;
-
-	// pName = PyUnicode_FromString((char*)"script");
-	// pModule = PyImport_Import(pName);
-	// pFunc = PyObject_GetAttrString(pModule, (char*)"test");
-	// pArgs = PyTuple_Pack(1, PyUnicode_FromString((char*)"Greg"));
-	// pValue = PyObject_CallObject(pFunc, pArgs);
-	
-	// auto result = _PyUnicode_AsString(pValue);
-	// std::cout << result << std::endl;
-
-	// //Close the python instance
-	// Py_Finalize();
-
-
-    keyPointCloudPtr_->header = entirePointCloudPtr_->header;
-    keyPointCloudPtr_->width = entirePointCloudPtr_->width;
-    keyPointCloudPtr_->height = entirePointCloudPtr_->width;
-    keyPointCloudPtr_->points.resize(keyPointCloudPtr_->width * keyPointCloudPtr_->height);
-    keyPointCloudPtr_->clear();
+    keyPointCloudPtr->header = entirePointCloudPtr_->header;
+    keyPointCloudPtr->width = entirePointCloudPtr_->width;
+    keyPointCloudPtr->height = entirePointCloudPtr_->width;
+    keyPointCloudPtr->points.resize(keyPointCloudPtr->width * keyPointCloudPtr->height);
+    // keyPointCloudPtr->clear();
     
-    
-    for(auto const kp : keypoints){
+    // std::cout << keyPointCloudPtr->size() << std::endl;
+    for(auto &kp : keypoints){
         size_t u = (size_t) kp.pt.y;
         size_t v = (size_t) kp.pt.x;
         if (u>SH_ | v > SW_)
             continue;
         size_t vv = (v + SW_ - pixel_shift_by_row_[u]) % SW_;
-
-        keyPointCloudPtr_->points.push_back(entirePointCloudPtr_->points[vv]);
-        
-        }
-
-    publishPointCloud(keyPointCloudPtr_);
+         
+        keyPointCloudPtr->points[vv] = entirePointCloudPtr_->points[u*SW_ + vv];
+        // std::cout << keyPointCloudPtr->points[vv] << std::endl;
+    }
+   
+    
+    if(!keyPointCloudPtr->empty())
+    {
+        publishPointCloud(keyPointCloudPtr);
+    }
+    
     
     std::chrono::steady_clock::time_point _end(std::chrono::steady_clock::now());
 

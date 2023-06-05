@@ -229,11 +229,12 @@ class ImageProcessor:
       msg_cloud.header.frame_id = "keypoint_frame"
       msg_cloud.width = self.width
       msg_cloud.height = self.height
+      msg_cloud.data = [0] * (self.width * self.height)
       msg_cloud.fields = [
             PointField('x', 0, PointField.FLOAT32, 1),
             PointField('y', 4, PointField.FLOAT32, 1),
             PointField('z', 8, PointField.FLOAT32, 1)]
-      temp = []
+      temp = np.zeros((self.width, self.height))
       # a = np.asarray(self.cloud) 
       for i in range(pts.shape[1]):
           x, y, _= pts[:, i]
@@ -242,9 +243,9 @@ class ImageProcessor:
             continue
           inx = int((x + self.width - self.pixel_shift_by_row[y]) % self.width)
           # cloud.points.append(pt)
-          temp.append(self.cloud[inx])
+          msg_cloud.data[inx] = self.cloud[inx]
           # msg_cloud.data.append(self.cloud.data[inx])
-      msg_cloud.data = np.asarray(np.array(temp), np.float32).tobytes()
+      # msg_cloud.data = np.asarray(np.array(temp), np.float32).tobytes()
       self.points_pub.publish(msg_cloud)
       rospy.loginfo("Point Cloud Published!")
     # pass

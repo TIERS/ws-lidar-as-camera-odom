@@ -1,7 +1,0 @@
-signal-image-keypoints-odom
-/home/xianjia/ws-lidar-as-camera-odom/devel/.private/signal-image-keypoints-odom/cmake.lock /home/xianjia/ws-lidar-as-camera-odom/devel/./cmake.lock
-/home/xianjia/ws-lidar-as-camera-odom/devel/.private/signal-image-keypoints-odom/lib/libsignal_image_keypoints_odom.so /home/xianjia/ws-lidar-as-camera-odom/devel/lib/libsignal_image_keypoints_odom.so
-/home/xianjia/ws-lidar-as-camera-odom/devel/.private/signal-image-keypoints-odom/lib/pkgconfig/signal-image-keypoints-odom.pc /home/xianjia/ws-lidar-as-camera-odom/devel/lib/pkgconfig/signal-image-keypoints-odom.pc
-/home/xianjia/ws-lidar-as-camera-odom/devel/.private/signal-image-keypoints-odom/lib/signal-image-keypoints-odom/signal_image_keypoints_odom_node /home/xianjia/ws-lidar-as-camera-odom/devel/lib/signal-image-keypoints-odom/signal_image_keypoints_odom_node
-/home/xianjia/ws-lidar-as-camera-odom/devel/.private/signal-image-keypoints-odom/share/signal-image-keypoints-odom/cmake/signal-image-keypoints-odomConfig.cmake /home/xianjia/ws-lidar-as-camera-odom/devel/share/signal-image-keypoints-odom/cmake/signal-image-keypoints-odomConfig.cmake
-/home/xianjia/ws-lidar-as-camera-odom/devel/.private/signal-image-keypoints-odom/share/signal-image-keypoints-odom/cmake/signal-image-keypoints-odomConfig-version.cmake /home/xianjia/ws-lidar-as-camera-odom/devel/share/signal-image-keypoints-odom/cmake/signal-image-keypoints-odomConfig-version.cmake
