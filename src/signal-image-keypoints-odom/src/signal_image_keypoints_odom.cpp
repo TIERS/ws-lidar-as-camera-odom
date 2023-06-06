@@ -1,6 +1,6 @@
 #include "signal_image_keypoints_odom/signal_image_keypoints_odom.hpp"
 
-#include </home/xianjia/miniconda3/envs/lidar/include/python3.7m/Python.h>
+// #include </home/xianjia/miniconda3/envs/lidar/include/python3.7m/Python.h>
 
 lidarImageKeypointOdom::lidarImageKeypointOdom(ros::NodeHandle *nh_)
 {
@@ -40,6 +40,7 @@ void lidarImageKeypointOdom::pointCloudCallback(const sensor_msgs::PointCloud2::
 
     pcl::fromPCLPointCloud2(pcl_pc2,*entirePointCloudPtr_);
 
+    pc_time_ = std::chrono::steady_clock::now();
     ROS_INFO(">>>>>>>> camera pointcloud >>>>>>>>>");
 }
 
@@ -63,17 +64,27 @@ void lidarImageKeypointOdom::signalImageCallback(const sensor_msgs::ImageConstPt
         ROS_ERROR("cv_bridge exception: %s", e.what());
         return;
     }
+    img_time_ = std::chrono::steady_clock::now();
     ROS_INFO(">>>>>>>> sigal images received!!! >>>>>>>>>");
 }
  
-// TODO: check time difference between two frames of data, if too big, stop update the keypoint
 void lidarImageKeypointOdom::timerCallback(const ros::TimerEvent& event){
+
     if(img_.empty() | entirePointCloudPtr_->empty()){
         ROS_WARN("Either no image or no point cloud input!");
         return ;
     }
-    cv::Mat mp = img_.clone();
     std::chrono::steady_clock::time_point _start(std::chrono::steady_clock::now());
+    float img_gap = std::chrono::duration_cast<std::chrono::duration<double>>(img_time_ - _start).count();
+    float pc_gap = std::chrono::duration_cast<std::chrono::duration<double>>(pc_time_ - _start).count();
+    if(std::fabs(pc_gap) > 0.2 | std::fabs(img_gap) > 0.2){
+        {
+        ROS_WARN("No input data!");
+        return ;
+    }
+    }
+    cv::Mat mp = img_.clone();
+    
     std::vector<cv::KeyPoint> keypoints;
     if(keyPointsPtr_->empty())
     {
@@ -138,6 +149,7 @@ void lidarImageKeypointOdom::timerCallback(const ros::TimerEvent& event){
     
     std::chrono::steady_clock::time_point _end(std::chrono::steady_clock::now());
 
+    // FIXME: after the subscribing to the keypoint topic, the time cost becomes bigger. 
     ROS_INFO("Time cost: %f", std::chrono::duration_cast<std::chrono::duration<double>>(_end - _start).count());
 
 }

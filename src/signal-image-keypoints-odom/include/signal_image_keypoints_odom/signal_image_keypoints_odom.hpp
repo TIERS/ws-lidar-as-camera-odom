@@ -69,6 +69,12 @@ private:
 
 private:
 
+    std::chrono::steady_clock::time_point pc_time_;
+
+    std::chrono::steady_clock::time_point img_time_;
+
+    std::chrono::steady_clock::time_point timer_time_;
+
     int cnt_ = 0;
 
 #ifdef sensor_tpye=="os0"

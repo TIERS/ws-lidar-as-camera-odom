@@ -53,7 +53,7 @@ rosbag play indoor01_square.bag
 
 ### KISS-ICP with conventional keypoint extractors
 
-
+![](./imgs/kiss-icp-a.png)
 
 ### KISS-ICP with the superpoint feature extractor
 
