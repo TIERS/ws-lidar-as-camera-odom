@@ -3,14 +3,14 @@
 ## Installation
 ```
 git clone --recurse-submodules git@github.com:RealYXJ/ws-lidar-as-camera-odom.git
-cd ws-lidar-as-odom
+cd ws-lidar-as-camera-odom
 catkin build 
 ```
 
 
 ## Run 
 ```
-source ws-lidar-as-odom/devel/setup.bash
+source ws-lidar-as-camera-odom/devel/setup.bash
 ```
 
 Run the ROS master in one terminal 
