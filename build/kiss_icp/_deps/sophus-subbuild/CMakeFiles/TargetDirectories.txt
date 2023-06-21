@@ -1,3 +1,0 @@
-/home/jimmy/ws-lidar-as-camera-odom/build/kiss_icp/_deps/sophus-subbuild/CMakeFiles/rebuild_cache.dir
-/home/jimmy/ws-lidar-as-camera-odom/build/kiss_icp/_deps/sophus-subbuild/CMakeFiles/edit_cache.dir
-/home/jimmy/ws-lidar-as-camera-odom/build/kiss_icp/_deps/sophus-subbuild/CMakeFiles/sophus-populate.dir

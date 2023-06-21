@@ -1,2 +1,0 @@
-/usr/bin/ar qc libpipeline.a  CMakeFiles/pipeline.dir/KissICP.cpp.o
-/usr/bin/ranlib libpipeline.a

@@ -1,5 +1,0 @@
-Symlinking /home/jimmy/ws-lidar-as-camera-odom/devel/lib/libsignal_image_keypoints_odom.so
-Symlinking /home/jimmy/ws-lidar-as-camera-odom/devel/lib/signal-image-keypoints-odom/signal_image_keypoints_odom_node
-Symlinking /home/jimmy/ws-lidar-as-camera-odom/devel/lib/pkgconfig/signal-image-keypoints-odom.pc
-Symlinking /home/jimmy/ws-lidar-as-camera-odom/devel/share/signal-image-keypoints-odom/cmake/signal-image-keypoints-odomConfig-version.cmake
-Symlinking /home/jimmy/ws-lidar-as-camera-odom/devel/share/signal-image-keypoints-odom/cmake/signal-image-keypoints-odomConfig.cmake

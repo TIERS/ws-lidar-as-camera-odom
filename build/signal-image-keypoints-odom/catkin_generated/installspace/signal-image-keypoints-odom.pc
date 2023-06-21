@@ -1,8 +1,0 @@
-prefix=/home/jimmy/ws-lidar-as-camera-odom/install
-
-Name: signal-image-keypoints-odom
-Description: Description of signal-image-keypoints-odom
-Version: 0.0.0
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib 
-Requires: 

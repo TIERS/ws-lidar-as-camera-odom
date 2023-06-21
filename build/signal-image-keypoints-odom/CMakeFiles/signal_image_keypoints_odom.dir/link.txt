@@ -1,1 +1,0 @@
-/usr/bin/c++ -fPIC     -shared -Wl,-soname,libsignal_image_keypoints_odom.so -o /home/jimmy/ws-lidar-as-camera-odom/devel/.private/signal-image-keypoints-odom/lib/libsignal_image_keypoints_odom.so CMakeFiles/signal_image_keypoints_odom.dir/src/signal_image_keypoints_odom.cpp.o   -L/usr/local/lib 

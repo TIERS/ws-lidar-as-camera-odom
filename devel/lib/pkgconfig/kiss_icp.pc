@@ -1,1 +1,0 @@
-/home/jimmy/ws-lidar-as-camera-odom/devel/.private/kiss_icp/lib/pkgconfig/kiss_icp.pc

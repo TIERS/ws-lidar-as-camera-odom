@@ -1,6 +1,0 @@
-devel_space: /home/jimmy/ws-lidar-as-camera-odom/devel
-install: false
-install_space: /home/jimmy/ws-lidar-as-camera-odom/install
-profile: default
-source_space: /home/jimmy/ws-lidar-as-camera-odom/src
-workspace: /home/jimmy/ws-lidar-as-camera-odom
