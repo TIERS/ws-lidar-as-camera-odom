@@ -113,42 +113,6 @@ class VideoStreamer(object):
     input_image = input_image.astype('float32')                     #####################################
     return (input_image, True)                                      #####################################
 
-# Function to compute robustness
-def compute_robustness(pts1, pts2, homography_matrix, threshold):
-    print(pts1.shape)
-    keypoints1 = []
-    for i in range(pts1.shape[1]):
-        y, x, _ = pts1[:, i]
-        keypoint = cv2.KeyPoint(x, y, 1)  # Assuming size 1 for all keypoints
-        keypoints1.append(keypoint)
-
-    points1 = np.array([kp.pt for kp in keypoints1], dtype=np.float32)
-
-    # print(f"number of keypoints1 inside compute_robustness function: {len(keypoints1)}")
-
-    keypoints2 = []
-    for i in range(pts2.shape[1]):
-        y, x, _ = pts2[:, i]
-        keypoint = cv2.KeyPoint(x, y, 1)  # Assuming size 1 for all keypoints
-        keypoints2.append(keypoint)
-
-    points2 = np.array([kp.pt for kp in keypoints2], dtype=np.float32)
-
-    transformed_points1 = cv2.perspectiveTransform(np.expand_dims(points1, axis=1), homography_matrix)
-
-
-    pts3 = []
-    count = 0
-    for i, transformed_point in enumerate(transformed_points1):
-        min_dist = np.min(np.linalg.norm(points2 - transformed_point, axis=1))
-        if min_dist < threshold:
-            count += 1
-            pts3.append(pts1[:, i])
-    aa = np.array(pts3).T
-
-    print(aa.shape)
-    return aa, count / len(keypoints1)
-
 
 
 class ImageProcessor:
@@ -190,10 +154,14 @@ class ImageProcessor:
       
       # Convert the "mono16" image to a grayscale OpenCV image
       cv_image = np.uint8(cv_image / 256)
+      ########################
+      cv_image = cv2.resize(cv_image, (0, 0), fx=0.5, fy=0.5, interpolation=cv2.INTER_CUBIC) 
+      #######################
 
       # convert it to the input type of Superpoint network: HxW numpy float32 input image in range [0,1]
       cv_image = (cv_image.astype('float32') / 255.)
-      cv_image = cv_image.astype('float32')#
+      cv_image = cv_image.astype('float32')
+
       self.current_frame = cv_image
 
       self.img_time = time.time()
@@ -238,7 +206,9 @@ class ImageProcessor:
       # a = np.asarray(self.cloud) 
       for i in range(pts.shape[1]):
           x, y, _= pts[:, i]
-          x,y = int(x), int(y)
+          ####################################
+          x,y = int(x)*2, int(y)*2# now x y are the coordinates of the original image
+          ####################################
           if(x>self.width and y>self.height):
             continue
           inx = int((x + self.width - self.pixel_shift_by_row[y]) % self.width)
@@ -252,7 +222,6 @@ class ImageProcessor:
 
   def run(self):
     rospy.spin()
-
 
 
 if __name__ == '__main__':

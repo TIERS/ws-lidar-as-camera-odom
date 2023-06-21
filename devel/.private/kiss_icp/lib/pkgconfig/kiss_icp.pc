@@ -1,0 +1,8 @@
+prefix=/home/jimmy/ws-lidar-as-camera-odom/devel/.private/kiss_icp
+
+Name: kiss_icp
+Description: Description of kiss_icp
+Version: 0.2.9
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

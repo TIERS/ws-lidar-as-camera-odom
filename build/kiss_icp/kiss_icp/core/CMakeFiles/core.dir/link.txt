@@ -1,0 +1,2 @@
+/usr/bin/ar qc libcore.a  CMakeFiles/core.dir/Registration.cpp.o CMakeFiles/core.dir/Deskew.cpp.o CMakeFiles/core.dir/VoxelHashMap.cpp.o CMakeFiles/core.dir/Preprocessing.cpp.o CMakeFiles/core.dir/Threshold.cpp.o
+/usr/bin/ranlib libcore.a

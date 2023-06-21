@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC -O3 -DNDEBUG  -shared -Wl,-soname,libgmock.so -o ../lib/libgmock.so CMakeFiles/gmock.dir/src/gmock-all.cc.o  -Wl,-rpath,/home/jimmy/ws-lidar-as-camera-odom/build/kiss_icp/gtest/lib ../lib/libgtest.so -lpthread 

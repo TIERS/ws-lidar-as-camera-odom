@@ -1,0 +1,2 @@
+/usr/bin/ar qc libmetrics.a  CMakeFiles/metrics.dir/Metrics.cpp.o
+/usr/bin/ranlib libmetrics.a

@@ -1,0 +1,51 @@
+[35m[1mScanning dependencies of target signal_image_keypoints_odom[0m
+[ 25%] [32mBuilding CXX object CMakeFiles/signal_image_keypoints_odom.dir/src/signal_image_keypoints_odom.cpp.o[0m
+In file included from [01m[K/home/jimmy/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/src/signal_image_keypoints_odom.cpp:1[m[K:
+[01m[K/home/jimmy/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/include/signal_image_keypoints_odom/signal_image_keypoints_odom.hpp:80:19:[m[K [01;35m[Kwarning: [m[Kextra tokens at end of #ifdef directive
+   80 | #ifdef sensor_tpye[01;35m[K==[m[K"os0"
+      |                   [01;35m[K^~[m[K
+[01m[K/home/jimmy/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/src/signal_image_keypoints_odom.cpp:19:19:[m[K [01;35m[Kwarning: [m[Kextra tokens at end of #ifdef directive
+   19 | #ifdef sensor_tpye[01;35m[K==[m[K"os0"
+      |                   [01;35m[K^~[m[K
+In file included from [01m[K/opt/ros/noetic/include/ros/ros.h:40[m[K,
+                 from [01m[K/home/jimmy/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/include/signal_image_keypoints_odom/signal_image_keypoints_odom.hpp:2[m[K,
+                 from [01m[K/home/jimmy/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/src/signal_image_keypoints_odom.cpp:1[m[K:
+[01m[K/home/jimmy/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/src/signal_image_keypoints_odom.cpp:[m[K In member function ‘[01m[Kvoid lidarImageKeypointOdom::timerCallback(const ros::TimerEvent&)[m[K’:
+[01m[K/home/jimmy/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/src/signal_image_keypoints_odom.cpp:104:18:[m[K [01;35m[Kwarning: [m[Kformat ‘[01m[K%d[m[K’ expects argument of type ‘[01m[Kint[m[K’, but argument 8 has type ‘[01m[Kstd::vector<cv::KeyPoint>::size_type[m[K’ {aka ‘[01m[Klong unsigned int[m[K’} [[01;35m[K-Wformat=[m[K]
+  104 |         ROS_INFO([01;35m[K"keypoint vector size: %d"[m[K, [32m[Kkeypoints.size()[m[K);
+      |                  [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~[m[K  [32m[K~~~~~~~~~~~~~~~~[m[K
+      |                                                            [32m[K|[m[K
+      |                                                            [32m[Kstd::vector<cv::KeyPoint>::size_type {aka long unsigned int}[m[K
+[01m[K/opt/ros/noetic/include/ros/console.h:351:165:[m[K [01;36m[Knote: [m[Kin definition of macro ‘[01m[KROSCONSOLE_PRINT_AT_LOCATION_WITH_FILTER[m[K’
+  351 |     ::ros::console::print(filter, __rosconsole_define_location__loc.logger_, __rosconsole_define_location__loc.level_, __FILE__, __LINE__, __ROSCONSOLE_FUNCTION__, [01;36m[K__VA_ARGS__[m[K)
+      |                                                                                                                                                                     [01;36m[K^~~~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/console.h:390:7:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KROSCONSOLE_PRINT_AT_LOCATION[m[K’
+  390 |       [01;36m[KROSCONSOLE_PRINT_AT_LOCATION[m[K(__VA_ARGS__); \
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/ros/console.h:575:35:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KROS_LOG_COND[m[K’
+  575 | #define ROS_LOG(level, name, ...) [01;36m[KROS_LOG_COND[m[K(true, level, name, __VA_ARGS__)
+      |                                   [01;36m[K^~~~~~~~~~~~[m[K
+[01m[K/opt/ros/noetic/include/rosconsole/macros_generated.h:110:23:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KROS_LOG[m[K’
+  110 | #define ROS_INFO(...) [01;36m[KROS_LOG[m[K(::ros::console::levels::Info, ROSCONSOLE_DEFAULT_NAME, __VA_ARGS__)
+      |                       [01;36m[K^~~~~~~[m[K
+[01m[K/home/jimmy/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/src/signal_image_keypoints_odom.cpp:104:9:[m[K [01;36m[Knote: [m[Kin expansion of macro ‘[01m[KROS_INFO[m[K’
+  104 |         [01;36m[KROS_INFO[m[K("keypoint vector size: %d", keypoints.size());
+      |         [01;36m[K^~~~~~~~[m[K
+[01m[K/home/jimmy/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/src/signal_image_keypoints_odom.cpp:104:42:[m[K [01;36m[Knote: [m[Kformat string is defined here
+  104 |         ROS_INFO("keypoint vector size: [01;36m[K%d[m[K", keypoints.size());
+      |                                         [01;36m[K~^[m[K
+      |                                          [01;36m[K|[m[K
+      |                                          [01;36m[Kint[m[K
+      |                                         [32m[K%ld[m[K
+[ 50%] [32m[1mLinking CXX shared library /home/jimmy/ws-lidar-as-camera-odom/devel/.private/signal-image-keypoints-odom/lib/libsignal_image_keypoints_odom.so[0m
+[ 50%] Built target signal_image_keypoints_odom
+[35m[1mScanning dependencies of target signal_image_keypoints_odom_node[0m
+[ 75%] [32mBuilding CXX object CMakeFiles/signal_image_keypoints_odom_node.dir/src/signal_image_keypoints_odom_node.cpp.o[0m
+In file included from [01m[K/home/jimmy/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/src/signal_image_keypoints_odom_node.cpp:1[m[K:
+[01m[K/home/jimmy/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/include/signal_image_keypoints_odom/signal_image_keypoints_odom.hpp:80:19:[m[K [01;35m[Kwarning: [m[Kextra tokens at end of #ifdef directive
+   80 | #ifdef sensor_tpye[01;35m[K==[m[K"os0"
+      |                   [01;35m[K^~[m[K
+[100%] [32m[1mLinking CXX executable /home/jimmy/ws-lidar-as-camera-odom/devel/.private/signal-image-keypoints-odom/lib/signal-image-keypoints-odom/signal_image_keypoints_odom_node[0m
+/usr/bin/ld: warning: libopencv_imgcodecs.so.4.2, needed by /opt/ros/noetic/lib/libcv_bridge.so, may conflict with libopencv_imgcodecs.so.4.1
+/usr/bin/ld: warning: libopencv_flann.so.4.2, needed by /usr/lib/x86_64-linux-gnu/libopencv_features2d.so.4.2.0, may conflict with libopencv_flann.so.4.1
+[100%] Built target signal_image_keypoints_odom_node

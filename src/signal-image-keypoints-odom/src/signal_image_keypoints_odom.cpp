@@ -160,5 +160,3 @@ void lidarImageKeypointOdom::publishPointCloud(const pcl::PointCloud<pcl::PointX
         keyPointCloudPub_.publish(rosCloud);
         ROS_INFO("Point Cloud Published!!!");
 }
-
-

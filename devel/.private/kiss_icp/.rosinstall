@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/jimmy/ws-lidar-as-camera-odom/devel/.private/kiss_icp/setup.sh

@@ -1,0 +1,4 @@
+Symlinking /home/jimmy/ws-lidar-as-camera-odom/devel/lib/pkgconfig/kiss_icp.pc
+Symlinking /home/jimmy/ws-lidar-as-camera-odom/devel/lib/kiss_icp/odometry_node
+Symlinking /home/jimmy/ws-lidar-as-camera-odom/devel/share/kiss_icp/cmake/kiss_icpConfig.cmake
+Symlinking /home/jimmy/ws-lidar-as-camera-odom/devel/share/kiss_icp/cmake/kiss_icpConfig-version.cmake

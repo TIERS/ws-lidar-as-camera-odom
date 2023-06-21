@@ -1,0 +1,1 @@
+/home/jimmy/ws-lidar-as-camera-odom/devel/.private/kiss_icp/share/kiss_icp/cmake/kiss_icpConfig-version.cmake

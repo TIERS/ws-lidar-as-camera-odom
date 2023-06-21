@@ -1,0 +1,20 @@
+[35m[1mScanning dependencies of target core[0m
+[35m[1mScanning dependencies of target metrics[0m
+[  8%] [32mBuilding CXX object kiss_icp/metrics/CMakeFiles/metrics.dir/Metrics.cpp.o[0m
+[ 33%] [32mBuilding CXX object kiss_icp/core/CMakeFiles/core.dir/VoxelHashMap.cpp.o[0m
+[ 33%] [32mBuilding CXX object kiss_icp/core/CMakeFiles/core.dir/Registration.cpp.o[0m
+[ 33%] [32mBuilding CXX object kiss_icp/core/CMakeFiles/core.dir/Preprocessing.cpp.o[0m
+[ 41%] [32mBuilding CXX object kiss_icp/core/CMakeFiles/core.dir/Threshold.cpp.o[0m
+[ 50%] [32mBuilding CXX object kiss_icp/core/CMakeFiles/core.dir/Deskew.cpp.o[0m
+[ 58%] [32m[1mLinking CXX static library libcore.a[0m
+[ 58%] Built target core
+[35m[1mScanning dependencies of target pipeline[0m
+[ 66%] [32mBuilding CXX object kiss_icp/pipeline/CMakeFiles/pipeline.dir/KissICP.cpp.o[0m
+[ 75%] [32m[1mLinking CXX static library libpipeline.a[0m
+[ 75%] Built target pipeline
+[35m[1mScanning dependencies of target odometry_node[0m
+[ 83%] [32mBuilding CXX object CMakeFiles/odometry_node.dir/ros1/OdometryServer.cpp.o[0m
+[ 91%] [32m[1mLinking CXX static library libmetrics.a[0m
+[ 91%] Built target metrics
+[100%] [32m[1mLinking CXX executable /home/jimmy/ws-lidar-as-camera-odom/devel/.private/kiss_icp/lib/kiss_icp/odometry_node[0m
+[100%] Built target odometry_node
