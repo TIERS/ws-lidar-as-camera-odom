@@ -1,4 +1,4 @@
-#include "superpoint/PointTracker.h"
+#include "superpoint/PointTracker.hpp"
 
 SingleImage::SingleImage(std::string img_path)
     : img_path_(img_path)

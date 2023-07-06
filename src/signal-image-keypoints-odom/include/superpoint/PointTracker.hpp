@@ -1,5 +1,5 @@
-#ifndef __POINTTRACKER_H_
-#define __POINTTRACKER_H_
+#ifndef __POINTTRACKER_HPP_
+#define __POINTTRACKER_HPP_
 
 #include <iostream>
 #include <opencv2/opencv.hpp>

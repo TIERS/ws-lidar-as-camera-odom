@@ -10,14 +10,8 @@
 #include <sensor_msgs/image_encodings.h>
 
 #include <opencv2/core.hpp>
-// #include <opencv2/core.hpp>
 #include <opencv2/opencv.hpp>
 #include <opencv2/features2d.hpp>
-// #include <opencv2/xfeatures2d.hpp>
-// #include <opencv2/highgui.hpp>
-// #include <opencv2/imgcodecs.hpp>
-// #include <opencv2/xfeatures2d.hpp>
-// #include <opencv2/xfeatures2d/nonfree.hpp>
 
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/point_types.h>
@@ -28,17 +22,15 @@
 #include <pcl/search/impl/kdtree.hpp>
 #include <pcl/kdtree/impl/kdtree_flann.hpp>
 #include <pcl/filters/extract_indices.h>
-// #include <pcl/kdtree/kdtree.h>
-// #include <pcl-1.10/pcl/kdtree/kdtree_flann.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/features/normal_3d_omp.h>
 #include <pcl/filters/voxel_grid.h>
-// #include <pcl/visualization/pcl_visualizer.h>
-#include <boost/thread/thread.hpp>
 
+#include <boost/thread/thread.hpp>
 #include <chrono>
 #include <queue>
 
+#include "superpoint/NetWork.hpp"
 
 #define sensor_tpye "os0"
 

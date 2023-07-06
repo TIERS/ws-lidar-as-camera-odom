@@ -1,12 +1,23 @@
 # signal-image-keypoints-odom
 
 ## Installation
+
+### Clone our repo
 ```
 git clone --recurse-submodules git@github.com:RealYXJ/ws-lidar-as-camera-odom.git
 cd ws-lidar-as-camera-odom
 catkin build 
 ```
 
+### Install Dependency
+```
+<!-- libtorch -->
+cd ws-lidar-as-camera-odom/src/ && mkdir libs && cd libs
+wget https://download.pytorch.org/libtorch/cpu/libtorch-cxx11-abi-shared-with-deps-1.11.0%2Bcpu.zip
+unzip libtorch-cxx11-abi-shared-with-deps-1.11.0+cpu.zip
+rm libtorch-cxx11-abi-shared-with-deps-1.11.0+cpu.zip
+```
+Note: The lastest version will cause problems like unference to ros::init even though I have linked with `${catkin_LIBRARIES}`. Same problem has met by other people in https://github.com/pytorch/pytorch/issues/60178. I followed the solution provided by mmurooka commented on Nov 2, 2022 (https://github.com/mmurooka/SMPLpp/issues/1). Issue solved.
 
 ## Run 
 ```

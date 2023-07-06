@@ -1,4 +1,4 @@
-#include "superpoint/SuperPointFrontend.h"
+#include "superpoint/SuperPointFrontend.hpp"
 
 SPFrontend::SPFrontend(std::string weight_path, float nms_dist, float conf_thresh, float nn_thresh)
     : nms_dist_(nms_dist), conf_thresh_(conf_thresh), nn_thresh_(nn_thresh)

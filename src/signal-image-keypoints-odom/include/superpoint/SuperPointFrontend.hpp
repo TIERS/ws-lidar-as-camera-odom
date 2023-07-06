@@ -1,5 +1,5 @@
-#ifndef __SUPERPOINTFRONTEND_H_
-#define __SUPERPOINTFRONTEND_H_
+#ifndef __SUPERPOINTFRONTEND_HPP_
+#define __SUPERPOINTFRONTEND_HPP_
 
 #include <iostream>
 #include <opencv2/opencv.hpp>
@@ -12,7 +12,7 @@
 
 #include <torch/torch.h>
 
-#include "superpoint/NetWork.h" 
+#include "superpoint/NetWork.hpp" 
 
 
 // SuperPointFrontend

@@ -1,4 +1,4 @@
-# include "superpoint/NetWork.h"
+#include "superpoint/NetWork.hpp"
 
 SuperPointNet::SuperPointNet()
     :   relu_(torch::nn::ReLU(torch::nn::ReLUOptions().inplace(true))),
