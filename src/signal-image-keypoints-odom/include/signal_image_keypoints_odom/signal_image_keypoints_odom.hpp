@@ -37,6 +37,7 @@
 #include <boost/thread/thread.hpp>
 
 #include <chrono>
+#include <queue>
 
 
 #define sensor_tpye "os0"
@@ -76,6 +77,8 @@ private:
     std::chrono::steady_clock::time_point timer_time_;
 
     int cnt_ = 0;
+
+    std::queue<cv::Mat> img_queue_;
 
 #ifdef sensor_tpye=="os0"
     int SH_ = 128;

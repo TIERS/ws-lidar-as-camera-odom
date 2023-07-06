@@ -1,6 +1,5 @@
 #include "signal_image_keypoints_odom/signal_image_keypoints_odom.hpp"
 
-// #include </home/xianjia/miniconda3/envs/lidar/include/python3.7m/Python.h>
 
 lidarImageKeypointOdom::lidarImageKeypointOdom(ros::NodeHandle *nh_)
 {
@@ -84,34 +83,50 @@ void lidarImageKeypointOdom::timerCallback(const ros::TimerEvent& event){
     }
     }
     cv::Mat mp = img_.clone();
+
+    img_queue_.push(mp);
+    if(img_queue_.size() < 2){
+        ROS_WARN("Not enough image to match!");
+        return;
+    }
+
+    cv::Mat img0 = img_queue_.front();
+    img_queue_.pop();
+    cv::Mat img1 = img_queue_.front();
+
+    cv::Mat resized0, resized1, img_gray0, img_gray1;
+    cv::resize(img0, resized0, cv::Size(SW_/2, SH_/2), cv::INTER_AREA);
+    cv::resize(img1, resized1, cv::Size(SW_/2, SH_/2), cv::INTER_AREA);
+    cv::cvtColor(resized0, img_gray0, cv::COLOR_BGR2GRAY);
+    cv::cvtColor(resized1, img_gray1, cv::COLOR_BGR2GRAY);
+
     
-    std::vector<cv::KeyPoint> keypoints;
-    if(keyPointsPtr_->empty())
-    {
-        cv::Mat imgGray;
-        cv::cvtColor(mp, imgGray, cv::COLOR_BGR2GRAY);
+    if(img_gray0.empty() || img_gray1.empty()){
+        return;
+    }   
+    cv::Ptr<cv::AKAZE> detector = cv::AKAZE::create();
+    cv::Ptr<cv::DescriptorMatcher> matcher = cv::BFMatcher::create(cv::NORM_HAMMING);
+    std::vector<cv::KeyPoint> kp0, kp1;
+    std::vector<cv::DMatch> matches;
+    cv::Mat des0, des1;
 
-        cv::Ptr<cv::AKAZE> detector = cv::AKAZE::create();
-        if(imgGray.empty() || detector == nullptr){
-            return;
-        }   
-        detector->detect(imgGray, keypoints);
+    detector->detectAndCompute(img0, cv::Mat(), kp0, des0);
+    detector->detectAndCompute(img1, cv::Mat(), kp1, des1);
 
-        if(keypoints.empty()){
-            ROS_WARN("No keypoints detected!");
-            return;
-        }
-        ROS_INFO("keypoint vector size: %d", keypoints.size());
+    matcher->match(des1, des0, matches);
+
+
+    ROS_INFO("kp0 number: %d, kp1 number: %d,matches number: %d", kp0.size(), kp1.size(), matches.size());
+
+    if(kp0.empty() || kp1.empty() ){
+        ROS_WARN("No keypoints detected!");
+        return;
     }
-    else
-    {
-        for(const auto kpc : keyPointsPtr_->points){
-            cv::KeyPoint kp;
-            kp.pt.x = kpc.x;
-            kp.pt.y = kpc.y;
-            keypoints.push_back(kp);
-        }
-    }
+   
+    std::sort(matches.begin(), matches.end());
+    const int match_size = matches.size();
+
+    std::vector<cv::DMatch> good_matches(matches.begin(), matches.begin() + (int)(match_size * 0.9f));
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr keyPointCloudPtr{new pcl::PointCloud<pcl::PointXYZ>};
 
@@ -124,14 +139,14 @@ void lidarImageKeypointOdom::timerCallback(const ros::TimerEvent& event){
 
     keyPointCloudPtr->header = entirePointCloudPtr_->header;
     keyPointCloudPtr->width = entirePointCloudPtr_->width;
-    keyPointCloudPtr->height = entirePointCloudPtr_->width;
+    keyPointCloudPtr->height = entirePointCloudPtr_->height;
     keyPointCloudPtr->points.resize(keyPointCloudPtr->width * keyPointCloudPtr->height);
     // keyPointCloudPtr->clear();
     
     // std::cout << keyPointCloudPtr->size() << std::endl;
-    for(auto &kp : keypoints){
-        size_t u = (size_t) kp.pt.y;
-        size_t v = (size_t) kp.pt.x;
+    for(auto &gm : good_matches){
+        size_t u = (size_t) kp1[gm.queryIdx].pt.y * 2;
+        size_t v = (size_t) kp1[gm.queryIdx].pt.x * 2;
         if (u>SH_ | v > SW_)
             continue;
         size_t vv = (v + SW_ - pixel_shift_by_row_[u]) % SW_;
