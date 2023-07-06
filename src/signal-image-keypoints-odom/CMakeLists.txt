@@ -84,14 +84,12 @@ target_link_libraries(signal_image_keypoints_odom_node PUBLIC
   ${catkin_LIBRARIES}
   ${PCL_LIBRARIES}
   ${OpenCV_LIBS}
-  superpoint
-  # ${TORCH_LIBRARIES}
 )
 
-list(APPEND EXTRA_INCLUDES "${PROJECT_SOURCE_DIR}/superpoint")
-target_include_directories(signal_image_keypoints_odom_node PUBLIC
-  ${PROJECT_BINARY_DIR}
-  ${PROJECT_SOURCE_DIR}/src/superpoint/include/superpoint
-  ${EXTRA_INCLUDES}
-)
+# list(APPEND EXTRA_INCLUDES "${PROJECT_SOURCE_DIR}/superpoint")
+# target_include_directories(signal_image_keypoints_odom_node PUBLIC
+#   ${PROJECT_BINARY_DIR}
+#   ${PROJECT_SOURCE_DIR}/src/superpoint/include/superpoint
+#   ${EXTRA_INCLUDES}
+# )
 
