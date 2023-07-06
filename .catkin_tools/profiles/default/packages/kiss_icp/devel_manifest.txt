@@ -1,6 +1,0 @@
-kiss-icp/ros
-/home/jimmy/ws-lidar-as-camera-odom/devel/.private/kiss_icp/cmake.lock /home/jimmy/ws-lidar-as-camera-odom/devel/./cmake.lock
-/home/jimmy/ws-lidar-as-camera-odom/devel/.private/kiss_icp/lib/pkgconfig/kiss_icp.pc /home/jimmy/ws-lidar-as-camera-odom/devel/lib/pkgconfig/kiss_icp.pc
-/home/jimmy/ws-lidar-as-camera-odom/devel/.private/kiss_icp/lib/kiss_icp/odometry_node /home/jimmy/ws-lidar-as-camera-odom/devel/lib/kiss_icp/odometry_node
-/home/jimmy/ws-lidar-as-camera-odom/devel/.private/kiss_icp/share/kiss_icp/cmake/kiss_icpConfig.cmake /home/jimmy/ws-lidar-as-camera-odom/devel/share/kiss_icp/cmake/kiss_icpConfig.cmake
-/home/jimmy/ws-lidar-as-camera-odom/devel/.private/kiss_icp/share/kiss_icp/cmake/kiss_icpConfig-version.cmake /home/jimmy/ws-lidar-as-camera-odom/devel/share/kiss_icp/cmake/kiss_icpConfig-version.cmake
