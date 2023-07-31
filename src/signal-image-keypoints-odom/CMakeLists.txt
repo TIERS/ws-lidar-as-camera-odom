@@ -23,13 +23,17 @@ message("    version:" ${OpenCV_VERSION})
 message("    libraries:" ${OpenCV_LIBS})
 message("    include path:" ${OpenCV_INCLUDE_DIRS})
 
+# find torch 
+set(CMAKE_PREFIX_PATH "./libs/libtorch/share/cmake/Torch")
+find_package(Torch REQUIRED)
+
 # include pcl libraries
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 find_package(PCL REQUIRED COMPONENTS common io)
 
-add_subdirectory(src/superpoint/)
+# add_subdirectory(src/superpoint/)
 
 ###################################
 ## catkin specific configuration ##
@@ -49,31 +53,68 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
+<<<<<<< HEAD
   include
   ${PROJECT_SOURCE_DIR}/src/superpoint/include
+=======
+  ${PROJECT_SOURCE_DIR}/include
+>>>>>>> 0911f0144ccee2ac813f6cbabf513966d7d79435
   ${PCL_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
 )
 
+<<<<<<< HEAD
 message(">>>>>>>> PROJECT_SOURCE_DIR: " ${PROJECT_SOURCE_DIR})
 message(">>>>>>>> PROJECT_BINARY_DIR: " ${${PROJECT_BINARY_DIR}})
+=======
+message("PROJECT_SOURCE_DIR:" ${PROJECT_SOURCE_DIR})
+# message("PROJECT_BINARY_DIR:" ${${PROJECT_BINARY_DIR}})
+
+# code to print include directories insize cmakelist.txt
+message("PROJECT INCLUDE DIRS: ")
+get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
+foreach(dir ${dirs})
+  message("    DIR=" ${dir})
+endforeach()
+>>>>>>> 0911f0144ccee2ac813f6cbabf513966d7d79435
 
 ## Declare a C++ library
-add_library(signal_image_keypoints_odom
-  src/signal_image_keypoints_odom.cpp
+add_library(superpoint
+  src/superpoint/NetWork.cpp
+  src/superpoint/PointTracker.cpp
+  src/superpoint/SuperPointFrontend.cpp
 )
 
 # target_include_directories(signal_image_keypoints_odom
 #     PUBLIC 
-#         ${PROJECT_SOURCE_DIR}src/superpoint/include/superpoint
+#         ${PROJECT_SOURCE_DIR}/include
 # )
 
+<<<<<<< HEAD
 target_link_libraries(signal_image_keypoints_odom PUBLIC
   superpoint
   # ${TORCH_LIBRARIES}
   ${PCL_LIBRARIES}
   ${OpenCV_LIBS}
   ${PROJECT_BINARY_DIR}
+=======
+target_link_libraries(superpoint PUBLIC
+  ${TORCH_LIBRARIES}
+  ${OpenCV_LIBS}
+  ${PCL_LIBRARIES}
+)
+
+add_library(signal_image_keypoints_odom
+  src/signal_image_keypoints_odom.cpp
+)
+
+
+target_link_libraries(signal_image_keypoints_odom PUBLIC
+  superpoint
+  ${OpenCV_LIBS}
+  ${PCL_LIBRARIES}
+>>>>>>> 0911f0144ccee2ac813f6cbabf513966d7d79435
 )
 
 ## Declare a C++ executable
@@ -85,6 +126,7 @@ add_executable(signal_image_keypoints_odom_node src/signal_image_keypoints_odom_
 target_link_libraries(signal_image_keypoints_odom_node PUBLIC
   signal_image_keypoints_odom
   ${catkin_LIBRARIES}
+<<<<<<< HEAD
   # ${PCL_LIBRARIES}
   # ${OpenCV_LIBS}
   # superpoint
@@ -96,5 +138,14 @@ target_link_libraries(signal_image_keypoints_odom_node PUBLIC
   # ${PROJECT_BINARY_DIR}
   # ${PROJECT_SOURCE_DIR}/src/superpoint/include/superpoint
   # ${EXTRA_INCLUDES}
+=======
+)
+
+# # list(APPEND EXTRA_INCLUDES "${PROJECT_SOURCE_DIR}/superpoint")
+# target_include_directories(signal_image_keypoints_odom_node PUBLIC
+#   # ${PROJECT_BINARY_DIR}
+#   ${PROJECT_SOURCE_DIR}/include
+#   # ${EXTRA_INCLUDES}
+>>>>>>> 0911f0144ccee2ac813f6cbabf513966d7d79435
 # )
 

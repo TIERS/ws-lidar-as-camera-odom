@@ -1,5 +1,6 @@
 # include "superpoint/NetWork.hpp"
 
+
 SuperPointNet::SuperPointNet()
     :   relu_(torch::nn::ReLU(torch::nn::ReLUOptions().inplace(true))),
         pool_(torch::nn::MaxPool2d(torch::nn::MaxPool2dOptions(2).stride(2))),

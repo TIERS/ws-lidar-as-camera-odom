@@ -2,5 +2,6 @@ build
 devel
 logs
 src/signal-image-keypoints-odom/src/superpoint/libs
+src/signal-image-keypoints-odom/libs/
 .vscode
 .catkin_tools
