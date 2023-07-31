@@ -18,10 +18,10 @@ find_package(catkin REQUIRED COMPONENTS
 # find opencv
 find_package(OpenCV REQUIRED)
 
-message(STATUS "OpenCV library status:")
-message(STATUS "    version: ${OpenCV_VERSION}")
-message(STATUS "    libraries: ${OpenCV_LIBS}")
-message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
+message("OpenCV library status:")
+message("    version:" ${OpenCV_VERSION})
+message("    libraries:" ${OpenCV_LIBS})
+message("    include path:" ${OpenCV_INCLUDE_DIRS})
 
 # include pcl libraries
 include_directories(${PCL_INCLUDE_DIRS})
@@ -50,12 +50,13 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
   include
+  ${PROJECT_SOURCE_DIR}/src/superpoint/include
   ${PCL_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
 )
 
-message("PROJECT_SOURCE_DIR:" ${PROJECT_SOURCE_DIR})
-message("PROJECT_BINARY_DIR:" ${${PROJECT_BINARY_DIR}})
+message(">>>>>>>> PROJECT_SOURCE_DIR: " ${PROJECT_SOURCE_DIR})
+message(">>>>>>>> PROJECT_BINARY_DIR: " ${${PROJECT_BINARY_DIR}})
 
 ## Declare a C++ library
 add_library(signal_image_keypoints_odom
@@ -67,11 +68,13 @@ add_library(signal_image_keypoints_odom
 #         ${PROJECT_SOURCE_DIR}src/superpoint/include/superpoint
 # )
 
-# target_link_libraries(signal_image_keypoints_odom PUBLIC
-#   superpoint
-#   # ${TORCH_LIBRARIES}
-#   ${OpenCV_LIBS}
-# )
+target_link_libraries(signal_image_keypoints_odom PUBLIC
+  superpoint
+  # ${TORCH_LIBRARIES}
+  ${PCL_LIBRARIES}
+  ${OpenCV_LIBS}
+  ${PROJECT_BINARY_DIR}
+)
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
@@ -82,16 +85,16 @@ add_executable(signal_image_keypoints_odom_node src/signal_image_keypoints_odom_
 target_link_libraries(signal_image_keypoints_odom_node PUBLIC
   signal_image_keypoints_odom
   ${catkin_LIBRARIES}
-  ${PCL_LIBRARIES}
-  ${OpenCV_LIBS}
-  superpoint
+  # ${PCL_LIBRARIES}
+  # ${OpenCV_LIBS}
+  # superpoint
   # ${TORCH_LIBRARIES}
 )
 
-list(APPEND EXTRA_INCLUDES "${PROJECT_SOURCE_DIR}/superpoint")
-target_include_directories(signal_image_keypoints_odom_node PUBLIC
-  ${PROJECT_BINARY_DIR}
-  ${PROJECT_SOURCE_DIR}/src/superpoint/include/superpoint
-  ${EXTRA_INCLUDES}
-)
+# list(APPEND EXTRA_INCLUDES "${PROJECT_SOURCE_DIR}/superpoint")
+# target_include_directories(signal_image_keypoints_odom_node PUBLIC
+  # ${PROJECT_BINARY_DIR}
+  # ${PROJECT_SOURCE_DIR}/src/superpoint/include/superpoint
+  # ${EXTRA_INCLUDES}
+# )
 

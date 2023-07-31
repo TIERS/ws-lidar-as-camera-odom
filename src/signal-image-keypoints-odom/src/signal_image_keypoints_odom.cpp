@@ -15,6 +15,7 @@ lidarImageKeypointOdom::lidarImageKeypointOdom(ros::NodeHandle *nh_)
 
     ROS_INFO("OpenCV version: %s", cv::getVersionString().c_str());
 
+
 #ifdef sensor_tpye=="os0"
     for (int i = 0; i < SH_; i++)  {
         pixel_shift_by_row_[i] = initial_arr[i%4];
@@ -99,7 +100,24 @@ void lidarImageKeypointOdom::timerCallback(const ros::TimerEvent& event){
     cv::resize(img1, resized1, cv::Size(SW_/2, SH_/2), cv::INTER_AREA);
     cv::cvtColor(resized0, img_gray0, cv::COLOR_BGR2GRAY);
     cv::cvtColor(resized1, img_gray1, cv::COLOR_BGR2GRAY);
+    cv::imwrite("/home/xianjia/250-gray.png", img_gray1);
+    std::vector<cv::KeyPoint> pts;
+    cv::Mat descMat_out;
+    spfrontend_.run(img_gray1, pts, descMat_out);
+    ROS_INFO("superpoints size: %d", pts.size());
+    if(pts.size() > 0){
+        cv::Mat img_color = resized1.clone();
+            for (const auto& kpoint : pts)
+            {
+                // const auto& point = kpoint.pt;
+                cv::circle(img_color, kpoint.pt, 2, cv::Scalar(0, 0, 255), -1);
+                // points.push_back(point);
+            }
 
+            // cv::imshow("result", resized1);
+            cv::imwrite("/home/xianjia/250.png", img_color);
+    }
+    
     
     if(img_gray0.empty() || img_gray1.empty()){
         return;

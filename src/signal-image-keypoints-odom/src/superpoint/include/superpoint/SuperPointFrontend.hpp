@@ -12,7 +12,7 @@
 
 #include <torch/torch.h>
 
-#include "superpoint/NetWork.h" 
+#include "superpoint/NetWork.hpp" 
 
 
 // SuperPointFrontend

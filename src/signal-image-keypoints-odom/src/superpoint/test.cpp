@@ -1,8 +1,8 @@
 #include <opencv2/opencv.hpp>
 
-#include "superpoint/NetWork.h"
-#include "superpoint/PointTracker.h"
-#include "superpoint/SuperPointFrontend.h"
+#include "superpoint/NetWork.hpp"
+#include "superpoint/PointTracker.hpp"
+#include "superpoint/SuperPointFrontend.hpp"
 
 int main(int argc, const char *argv[])
 {

@@ -38,7 +38,12 @@
 
 #include <chrono>
 #include <queue>
+#include <iostream>
+#include <filesystem>
 
+#include "superpoint/NetWork.hpp"
+#include "superpoint/PointTracker.hpp"
+#include "superpoint/SuperPointFrontend.hpp"
 
 #define sensor_tpye "os0"
 
@@ -79,6 +84,10 @@ private:
     int cnt_ = 0;
 
     std::queue<cv::Mat> img_queue_;
+
+    std::string weight_path_ = "/home/xianjia/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/model/superpoint_v3_t.pt";
+   
+    SPFrontend spfrontend_{weight_path_, 4, 0.015, 0.4};
 
 #ifdef sensor_tpye=="os0"
     int SH_ = 128;
