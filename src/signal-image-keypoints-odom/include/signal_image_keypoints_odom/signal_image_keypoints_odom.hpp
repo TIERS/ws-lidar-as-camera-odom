@@ -109,6 +109,8 @@ public:
 
     void timerCallback(const ros::TimerEvent& event);
 
+    void superpointtimerCallback(const ros::TimerEvent& event);
+
 public:
 
     void publishPointCloud(const pcl::PointCloud<pcl::PointXYZ>::Ptr &pc); 

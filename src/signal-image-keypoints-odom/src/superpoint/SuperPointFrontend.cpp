@@ -5,6 +5,7 @@ SPFrontend::SPFrontend(std::string weight_path, float nms_dist, float conf_thres
 {
     model = std::make_shared<SuperPointNet>();
     torch::load(model, weight_path);
+    std::cout << "SuperPointNet loaded" << std::endl;
     torch::autograd::GradMode::set_enabled(false);
 
     model->eval();
