@@ -6,7 +6,7 @@
 ```
 git clone --recurse-submodules git@github.com:RealYXJ/ws-lidar-as-camera-odom.git
 cd ws-lidar-as-camera-odom
-git checkout optimize_code
+git checkout optimize_code_zhz
 ```
 
 ### Install Dependency
