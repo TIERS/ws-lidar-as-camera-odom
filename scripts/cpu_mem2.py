@@ -4,53 +4,76 @@ from std_msgs.msg import Float32
 from std_msgs.msg import UInt64
 import time
 
-lio_1_cpu_data = None
-lio_2_cpu_data = None
-lio_1_mem_data = None
-lio_2_mem_data = None
+odometry_node_cpu_data = None
+odometry_node_mem_data = None
+keypoints_node_cpu_data = None
+keypoints_node_mem_data = None
 
-lio_1_cpu_list = []
-lio_2_cpu_list = []
-lio_1_mem_list = []
-lio_2_mem_list = []
+odometry_node_cpu_list = []
+odometry_node_mem_list = []
+keypoints_node_cpu_list = []
+keypoints_node_mem_list = []
 
-def lio1_cpu_cb(data):
-    global lio_1_cpu_data
-    lio_1_cpu_data = data.data
+use_keypoint_pointcloud=True
 
-def lio1_mem_cb(data):
-    global lio_1_mem_data
-    lio_1_mem_data = data.data
 
-def lio2_cpu_cb(data):
-    global lio_2_cpu_data
-    lio_2_cpu_data = data.data
-    if lio_2_cpu_data > 10 and lio_1_cpu_data > 3:
-        lio_1_cpu_list.append(lio_1_cpu_data)
-        lio_2_cpu_list.append(lio_2_cpu_data)
-        lio_1_mem_list.append(lio_1_mem_data)
-        lio_2_mem_list.append(lio_2_mem_data)
-        print_data()
-    else:
-        print('Not active yet')
 
-def lio2_mem_cb(data):
-    global lio_2_mem_data
-    lio_2_mem_data = data.data
+def odometry_node_cpu_cb(data):
+    global odometry_node_cpu_data
+    odometry_node_cpu_data = data.data
+    if not use_keypoint_pointcloud:
+        if odometry_node_cpu_data > 2.0 :
+            odometry_node_cpu_list.append(odometry_node_cpu_data)
+            odometry_node_mem_list.append(odometry_node_mem_data)
+            print("-------------------------------")
+            print_data_only_odometry()
+
+        else:
+            print('Using the raw pointcloud, but not data fed in yet')
+
+    
+def odometry_node_mem_cb(data):
+    global odometry_node_mem_data
+    odometry_node_mem_data = data.data
+
+
+
+def keypoints_node_cpu_cb(data):
+    global keypoints_node_cpu_data
+    keypoints_node_cpu_data = data.data
+
+    global use_keypoint_pointcloud
+    if use_keypoint_pointcloud :
+        if keypoints_node_cpu_data > 10 and odometry_node_cpu_data > 2.0:
+            odometry_node_cpu_list.append(odometry_node_cpu_data)
+            keypoints_node_cpu_list.append(keypoints_node_cpu_data)
+            odometry_node_mem_list.append(odometry_node_mem_data)
+            keypoints_node_mem_list.append(keypoints_node_mem_data)
+            print("-------------------------------")
+            print_data()
+        else:
+            print("Using the pointcloud from keypoint, but not data fed in yet")
+
+def keypoints_node_mem_cb(data):
+    global keypoints_node_mem_data
+    keypoints_node_mem_data = data.data
 
 def print_data():
-    print('Mean /cpu_monitor/odometry_node/cpu:', np.mean(lio_1_cpu_list))
-    print('Mean /cpu_monitor/odometry_node/mem:', np.mean(lio_1_mem_list))
-    print('Mean /cpu_monitor/signal_image_keypoints_odom_node/cpu:', np.mean(lio_2_cpu_list))
-    print('Mean /cpu_monitor/signal_image_keypoints_odom_node/mem:', np.mean(lio_2_mem_list))
+    print('Mean cpu:', np.mean(odometry_node_cpu_list)+np.mean(keypoints_node_cpu_list))
+    print('Mean memory:', np.mean(odometry_node_mem_list)+np.mean(keypoints_node_mem_list))
+
+def print_data_only_odometry():
+    print('Mean cpu:', np.mean(odometry_node_cpu_list))
+    print('Mean memory:', np.mean(odometry_node_mem_list))
+
 
 def listener(): 
     rospy.init_node('listener', anonymous=True)
 
-    rospy.Subscriber("/cpu_monitor/odometry_node/cpu", Float32, lio1_cpu_cb)               
-    rospy.Subscriber("/cpu_monitor/odometry_node/mem", UInt64, lio1_mem_cb)  
-    rospy.Subscriber("/cpu_monitor/signal_image_keypoints_odom_node/cpu", Float32, lio2_cpu_cb)               
-    rospy.Subscriber("/cpu_monitor/signal_image_keypoints_odom_node/mem", UInt64, lio2_mem_cb)
+    rospy.Subscriber("/cpu_monitor/odometry_node/cpu", Float32, odometry_node_cpu_cb)               
+    rospy.Subscriber("/cpu_monitor/odometry_node/mem", UInt64, odometry_node_mem_cb)  
+    rospy.Subscriber("/cpu_monitor/signal_image_keypoints_odom_node/cpu", Float32, keypoints_node_cpu_cb)               
+    rospy.Subscriber("/cpu_monitor/signal_image_keypoints_odom_node/mem", UInt64, keypoints_node_mem_cb)
 
     rospy.spin()
 
