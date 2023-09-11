@@ -21,13 +21,7 @@ rm libtorch-cxx11-abi-shared-with-deps-1.11.0+cpu.zip
 ```
 Note: The lastest version will cause problems like unference to ros::init even though I have linked with `${catkin_LIBRARIES}`. Same problem has met by other people in https://github.com/pytorch/pytorch/issues/60178. I followed the solution provided by mmurooka commented on Nov 2, 2022 (https://github.com/mmurooka/SMPLpp/issues/1). Issue solved.
 
-
-
-## install cpu monitor
-```
-cd ws-lidar-as-camera-odom/src/
-git clone https://github.com/alspitz/cpu_monitor.git
-```
+## Remember to check several files to make sure that we have the right absolute path
 
 ## cmake build oand run our project
 ```
@@ -84,6 +78,8 @@ rosbag play [rosbag that you have]
 5. threshold inside the extract_neighbourhood, is weird, 300 will not work as we want, because the image range in between [0,1]
 6. we can just use signal_mp.convertTo(signal_mp, CV_32F, 1.0 / 65535.0), it's more loseless compared to the previous one.
 7. if (u>SH_ || v > SW_)....... these if situations will not happen, so we don't need them.
+8. add cpu_monitor to submodule
+
 
 ### KISS-ICP with raw point cloud
 
