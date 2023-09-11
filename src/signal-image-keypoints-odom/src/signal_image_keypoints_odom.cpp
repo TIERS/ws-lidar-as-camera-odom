@@ -3,54 +3,31 @@
 
 lidarImageKeypointOdom::lidarImageKeypointOdom(ros::NodeHandle *nh_)
 {
-    pointCloudSub_ = nh_->subscribe<sensor_msgs::PointCloud2>("/os_cloud_node/points", 10, &lidarImageKeypointOdom::pointCloudCallback, this);
-
-    keyPointsSub_ = nh_->subscribe<sensor_msgs::PointCloud2>("/for_doctor_yu", 10, &lidarImageKeypointOdom::keyPointsCallback, this);
-
     signalImagesSub_ = nh_->subscribe<sensor_msgs::Image>("/img_node/signal_image", 10, &lidarImageKeypointOdom::signalImageCallback, this);
+    rangeImageSub_ = nh_->subscribe<sensor_msgs::Image>("/img_node/range_image", 10, &lidarImageKeypointOdom::rangeImageCallback, this);
+    pointCloudSub_ = nh_->subscribe<sensor_msgs::PointCloud2>("/os_cloud_node/points", 10, &lidarImageKeypointOdom::pointCloudCallback, this);
 
     keyPointCloudPub_ =  nh_->advertise<sensor_msgs::PointCloud2>("/keypoint_point_cloud", 1);
 
-    timer_ = nh_->createTimer(ros::Duration(0.1), &lidarImageKeypointOdom::superpointtimerCallback, this);
-
-    rangeImageSub_ = nh_->subscribe<sensor_msgs::Image>("/img_node/range_image", 10, &lidarImageKeypointOdom::rangeImageCallback, this);
-
-
+    // choose superpoint_timerCallback or traditional_method_timerCallback to choose keypoint extractor
+    timer_ = nh_->createTimer(ros::Duration(0.1), &lidarImageKeypointOdom::superpoint_timerCallback, this);
+    
     // imu_sub_ = nh_->subscribe("/imu_topic", 10, &lidarImageKeypointOdom::imuCallback, this);
 
     // imu_pub_ = nh_->advertise<sensor_msgs::Imu>("/keypoint_imu", 10);
-    
+
+    //ROS_INFO("OpenCV version: %s", cv::getVersionString().c_str()); 
 
 
-    ROS_INFO("OpenCV version: %s", cv::getVersionString().c_str()); 
-
-
-#ifdef sensor_tpye=="os0"
-    for (int i = 0; i < SH_; i++)  {
-        pixel_shift_by_row_[i] = initial_arr[i%4];
-    }
-#else
-    for (int i = 0; i < SH_; i++){
-        pixel_shift_by_row_[i] = initial_arr[i%2];
-    }
-#endif
 }
 
-lidarImageKeypointOdom::~lidarImageKeypointOdom()
-{
-}
+lidarImageKeypointOdom::~lidarImageKeypointOdom(){}
 
 void lidarImageKeypointOdom::pointCloudCallback(const sensor_msgs::PointCloud2::ConstPtr& msg){
-    // ROS_INFO(">>>>>>>> camera pointcloud >>>>>>>>>");
-    pcl::PCLPointCloud2 pcl_pc2;
-
-    pcl_conversions::toPCL(*msg,pcl_pc2);
-
-
-    pcl::fromPCLPointCloud2(pcl_pc2,*entirePointCloudPtr_);
-
+        
+    pcl::fromROSMsg(*msg, *entirePointCloudPtr_);
     pc_time_ = std::chrono::steady_clock::now();
-    // ROS_INFO(">>>>>>>> camera pointcloud >>>>>>>>>");
+    //ROS_INFO(">>>>>>>> entire pointcloud received!>>>>>>>>>");
 }
 
 
@@ -60,19 +37,12 @@ void lidarImageKeypointOdom::pointCloudCallback(const sensor_msgs::PointCloud2::
 //     }
 
 
-void lidarImageKeypointOdom::keyPointsCallback(const sensor_msgs::PointCloud2::ConstPtr& msg){
-    pcl::PCLPointCloud2 pcl_pc2;
-
-    pcl_conversions::toPCL(*msg,pcl_pc2);
-
-    pcl::fromPCLPointCloud2(pcl_pc2,*keyPointsPtr_);
-}
-
 void lidarImageKeypointOdom::signalImageCallback(const sensor_msgs::ImageConstPtr& msg){ 
     try
-    {
-       cvPtr_ = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::MONO16);
-       img_ = cvPtr_->image;
+    {   
+        cv_bridge::CvImageConstPtr cvPtr;
+        cvPtr = cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::MONO16);
+        signalImg_ = cvPtr->image;
     }
     catch (cv_bridge::Exception& e)
     {
@@ -80,19 +50,23 @@ void lidarImageKeypointOdom::signalImageCallback(const sensor_msgs::ImageConstPt
         return;
     }
     signal_time_ = std::chrono::steady_clock::now();
-    // ROS_INFO(">>>>>>>> sigal images received!!! >>>>>>>>>");
+    //ROS_INFO(">>>>>>>> sigal images received!!! >>>>>>>>>");
 }
 
 void lidarImageKeypointOdom::rangeImageCallback(const sensor_msgs::ImageConstPtr& msg){
-    try {
+    try 
+    {
         cv_bridge::CvImageConstPtr cvPtr;
         cvPtr = cv_bridge::toCvShare(msg, sensor_msgs::image_encodings::MONO16);
-        rangeImg_ = cvPtr->image.clone();
-    } catch (cv_bridge::Exception& e) {
+        rangeImg_ = cvPtr->image;
+    } 
+    catch (cv_bridge::Exception& e) 
+    {
         ROS_ERROR("cv_bridge exception: %s", e.what());
         return;
     }
     range_time_ = std::chrono::steady_clock::now();
+    //ROS_INFO(">>>>>>>> range images received!!! >>>>>>>>>");
 }
 
 // std::vector<cv::KeyPoint> extract_neighbourhood(const cv::Mat& img, const cv::Point& point, int size = 9, int threshold = 150) {
@@ -117,7 +91,10 @@ void lidarImageKeypointOdom::rangeImageCallback(const sensor_msgs::ImageConstPtr
 //     return neibor;
 // }
 
-std::vector<cv::KeyPoint> extract_neighbourhood(const cv::Mat& img, const cv::Point& point, int size = 9, int threshold = 150) {
+
+
+
+std::vector<cv::KeyPoint> lidarImageKeypointOdom::extract_neighbourhood (const cv::Mat& img, const cv::Point& point, int size , int threshold ) {
     std::vector<cv::KeyPoint> neibor;
     int half_size = size / 2;
     int x_min = std::max(0, point.x - half_size);
@@ -125,6 +102,7 @@ std::vector<cv::KeyPoint> extract_neighbourhood(const cv::Mat& img, const cv::Po
     int y_min = std::max(0, point.y - half_size);
     int y_max = std::min(img.rows, point.y + half_size + 1);
 
+    //make sure that the neighborhood does not extend beyond the boundaries of the image
     cv::Mat neighbourhood = img(cv::Range(y_min, y_max), cv::Range(x_min, x_max));
 
     // Calculate the difference mask in one matrix operation
@@ -145,9 +123,9 @@ std::vector<cv::KeyPoint> extract_neighbourhood(const cv::Mat& img, const cv::Po
     return neibor;
 }
  
-void lidarImageKeypointOdom::superpointtimerCallback(const ros::TimerEvent& event){
+void lidarImageKeypointOdom::superpoint_timerCallback(const ros::TimerEvent& event){
 
-    if(img_.empty() | entirePointCloudPtr_->empty()){
+    if(rangeImg_.empty() ||signalImg_.empty() || entirePointCloudPtr_->empty()){
         ROS_WARN("Either no image or no point cloud input!");
         return ;
     }
@@ -155,42 +133,40 @@ void lidarImageKeypointOdom::superpointtimerCallback(const ros::TimerEvent& even
     float signal_gap = std::chrono::duration_cast<std::chrono::duration<double>>(signal_time_ - _start).count();
     float range_gap = std::chrono::duration_cast<std::chrono::duration<double>>(range_time_ - _start).count();
     float pc_gap = std::chrono::duration_cast<std::chrono::duration<double>>(pc_time_ - _start).count();
-    if(std::fabs(pc_gap) > 0.5 | std::fabs(signal_gap) > 0.5 | std::fabs(range_gap) > 0.5){
+    if(std::fabs(pc_gap) > 0.5 || std::fabs(signal_gap) > 0.5 || std::fabs(range_gap) > 0.5){
         {
         ROS_WARN("No input data!");
         return ;
     }
     }
-    cv::Mat mp = img_.clone();
-    cv::Mat range_mp = img_.clone();
+    cv::Mat signal_mp = signalImg_.clone();
+    cv::Mat range_mp = rangeImg_.clone();
     double gamma = 0.5;
 
-
-
-
-    mp.convertTo(mp, CV_8U, 1.0 / 256.0);
     // Resize the image
-    cv::resize(mp, mp, cv::Size(), 0.5, 0.5, cv::INTER_CUBIC);
+    cv::resize(signal_mp, signal_mp, cv::Size(), 0.5, 0.5, cv::INTER_LINEAR);
     // Convert to float32 in range [0,1]
-    mp.convertTo(mp, CV_32F, 1.0 / 255.0);
-    std::vector<cv::KeyPoint> siganl_pts;
+    signal_mp.convertTo(signal_mp, CV_32F, 1.0 / 65535.0);
+
+    std::vector<cv::KeyPoint> signal_pts;
     cv::Mat descMat_out;
-    spfrontend_.run(mp, siganl_pts, descMat_out);
+    spfrontend_.run(signal_mp, signal_pts, descMat_out);
+    //std::cout << "signal_pts.size "<<signal_pts.size() << std::endl;
+
     // ROS_INFO("superpoints size: %d", pts.size());
-    std::vector<cv::KeyPoint> neibor
-    
-    ;
-    for (const auto& keypoint : siganl_pts) {
-        std::vector<cv::KeyPoint> neighbourhood = extract_neighbourhood(mp, keypoint.pt, 7, 300);
+    std::vector<cv::KeyPoint> neibor;
+
+    for (const auto& keypoint : signal_pts) {
+        std::vector<cv::KeyPoint> neighbourhood = extract_neighbourhood(signal_mp, keypoint.pt, 7, 300);
         neibor.insert(neibor.end(), neighbourhood.begin(), neighbourhood.end());
     }
 
-    std::cout << "_________"<<neibor.size() << std::endl;
-    range_mp.convertTo(range_mp, CV_8U, 1.0 / 256.0);
+    //std::cout << "neibor.size after signal_pts "<<neibor.size() << std::endl;
+
     // Resize the image
-    cv::resize(range_mp, range_mp, cv::Size(), 0.5, 0.5, cv::INTER_CUBIC);
+    cv::resize(range_mp, range_mp, cv::Size(), 0.5, 0.5, cv::INTER_LINEAR);
     // Convert to float32 in range [0,1]
-    range_mp.convertTo(range_mp, CV_32F, 1.0 / 255.0);
+    range_mp.convertTo(range_mp, CV_32F, 1.0 / 65535.0);
     cv::pow(range_mp, gamma, range_mp);  // Apply gamma correction
     // range_mp = range_mp * 255.0;    // Scale back to [0, 255]
     // range_mp.convertTo(corrected_image, CV_8U);
@@ -199,15 +175,15 @@ void lidarImageKeypointOdom::superpointtimerCallback(const ros::TimerEvent& even
     cv::Mat descMat_out_range;
     spfrontend_.run(range_mp, range_pts, descMat_out_range);
 
-
     for (const auto& keypoint : range_pts) {
         std::vector<cv::KeyPoint> neighbourhood_range = extract_neighbourhood(range_mp, keypoint.pt, 7, 300);
         neibor.insert(neibor.end(), neighbourhood_range.begin(), neighbourhood_range.end());
     }
-    std::cout << neibor.size() << "-----------"<< std::endl;
- 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr keyPointCloudPtr{new pcl::PointCloud<pcl::PointXYZ>};
+    //std::cout << "neibor.size after range_pts "<<neibor.size() << std::endl;
 
+
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr keyPointCloudPtr{new pcl::PointCloud<pcl::PointXYZ>};
 
     keyPointCloudPtr->width = entirePointCloudPtr_->width;
     keyPointCloudPtr->height = entirePointCloudPtr_->height;
@@ -216,22 +192,23 @@ void lidarImageKeypointOdom::superpointtimerCallback(const ros::TimerEvent& even
     for(auto &gm : neibor){
         size_t u = (size_t) gm.pt.y * 2;
         size_t v = (size_t) gm.pt.x * 2;
-        if (u>SH_ | v > SW_)
-            continue;
-        if (u == keyPointCloudPtr->height)
-        {
-            u--;
-        }
-        if (v == keyPointCloudPtr->width)
-        {
-            v--;
-        }
-
+        //these if situations will not happen, because gm.pt.y is from [0,63]， so u is from [0,126]
+        //
+        // if (u>SH_ || v > SW_)
+        // {
+        //     continue;
+        // }
+        // if (u == keyPointCloudPtr->height)
+        // {
+        //     u--;//points on edge， just simply minus 1
+        // }
+        // if (v == keyPointCloudPtr->width)
+        // {
+        //     v--;//points on edge， just simply minus 1
+        // }
         keyPointCloudPtr->at(v,u) = entirePointCloudPtr_->at(v,u);
-
     }
    
-    
     if(!keyPointCloudPtr->empty())
     {
 
@@ -239,10 +216,9 @@ void lidarImageKeypointOdom::superpointtimerCallback(const ros::TimerEvent& even
     }
 }
 
+void lidarImageKeypointOdom::traditional_method_timerCallback(const ros::TimerEvent& event){
 
-void lidarImageKeypointOdom::timerCallback(const ros::TimerEvent& event){
-
-    if(img_.empty() | entirePointCloudPtr_->empty()){
+    if(signalImg_.empty() | entirePointCloudPtr_->empty()){
         ROS_WARN("Either no image or no point cloud input!");
         return ;
     }
@@ -255,7 +231,7 @@ void lidarImageKeypointOdom::timerCallback(const ros::TimerEvent& event){
         return ;
     }
     }
-    cv::Mat mp = img_.clone();
+    cv::Mat mp = signalImg_.clone();
 
     img_queue_.push(mp);
     if(img_queue_.size() < 2){
@@ -381,5 +357,5 @@ void lidarImageKeypointOdom::publishPointCloud(const pcl::PointCloud<pcl::PointX
     // last_received_imu_.header.stamp = ros::Time::now();
     // last_received_imu_.header.frame_id = "os_sensor";
     // imu_pub_.publish(last_received_imu_);
-    // ROS_INFO("Point Cloud Published!!!");
+    ROS_INFO("Point Cloud Published!!!");
 }
