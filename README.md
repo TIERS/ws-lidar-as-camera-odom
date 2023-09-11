@@ -36,10 +36,6 @@ cd ws-lidar-as-camera-odom/
 source devel/setup.bash
 ```
 
-Run the ROS master in one terminal 
-```
-roscore
-```
 
 Run the keypoint extractor ros node
 ```

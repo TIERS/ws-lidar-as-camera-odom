@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16.0)
 project(superpoint_feature)
 
 # find torch 
-set(CMAKE_PREFIX_PATH "/home/hasar/dev/ws_livox/src/ws-lidar-as-camera-odom/src/libs/libtorch/share/cmake/Torch")
+set(CMAKE_PREFIX_PATH "/home/jimmy/Downloads/Performance_comparison/ws-lidar-as-camera-odom/src/libs/libtorch/share/cmake/Torch")
 find_package(Torch REQUIRED)
 
 # find opencv
