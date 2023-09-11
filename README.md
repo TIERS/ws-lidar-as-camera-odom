@@ -65,7 +65,7 @@ Play the rosbag
 rosbag play [rosbag that you have]
 ```
 
-### What I moditied:
+### What I modified:
 1. delele several useless variable and function inside the class
 1. rearrange the class member,change the name of many function and variable, to make them more clear
 2. inside pointCloudCallback function, can just use one line: pcl::fromROSMsg(*msg, *entirePointCloudPtr_);

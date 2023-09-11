@@ -76,7 +76,7 @@ private:
 
 
 
-    std::string weight_path_ = "/home/jimmy/Downloads/Performance_comparison/yu_part/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/model/superpoint_v2.pt";
+    std::string weight_path_ = "/home/jimmy/Downloads/Performance_comparison/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/model/superpoint_v2.pt";
     SPFrontend spfrontend_{weight_path_, 4, 0.015, 0.4};
 
 
