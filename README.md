@@ -61,10 +61,10 @@ Run CPU_monitor
 roslaunch cpu_monitor cpu_monitor.launch poll_period:=1
 ```
 
-Run python scripts to show CPU and memory usage of our nodes, cpu_mem2.py will print the current mean value of our nodes.
+Run python scripts to show CPU and memory usage of our nodes, cpu_mem2.py will print the current mean value of CPU and memory usage of our nodes. If you just use the original raw pointcloud directly to kiss-icp, please set: use_keypoint_pointcloud=False, inside the codes.
 
 ```
-python3 cpu_mem2.py
+python cpu_mem2.py 
 ```
 
 Play the rosbag

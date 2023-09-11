@@ -4,6 +4,7 @@ from std_msgs.msg import Float32
 from std_msgs.msg import UInt64
 import time
 
+
 odometry_node_cpu_data = None
 odometry_node_mem_data = None
 keypoints_node_cpu_data = None
@@ -15,6 +16,7 @@ keypoints_node_cpu_list = []
 keypoints_node_mem_list = []
 
 use_keypoint_pointcloud=True
+
 
 
 
@@ -68,6 +70,7 @@ def print_data_only_odometry():
 
 
 def listener(): 
+
     rospy.init_node('listener', anonymous=True)
 
     rospy.Subscriber("/cpu_monitor/odometry_node/cpu", Float32, odometry_node_cpu_cb)               
@@ -78,4 +81,5 @@ def listener():
     rospy.spin()
 
 if __name__ == '__main__':           
+
     listener()
