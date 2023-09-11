@@ -1,3 +1,6 @@
 [submodule "src/kiss-icp"]
 	path = src/kiss-icp
 	url = https://github.com/PRBonn/kiss-icp
+[submodule "src/cpu_monitor"]
+	path = src/cpu_monitor
+	url = https://github.com/alspitz/cpu_monitor
