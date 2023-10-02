@@ -1,13 +1,13 @@
 #include <opencv2/opencv.hpp>
 
-#include "superpoint/NetWork.h"
-#include "superpoint/PointTracker.h"
-#include "superpoint/SuperPointFrontend.h"
+#include "superpoint/NetWork.hpp"
+#include "superpoint/PointTracker.hpp"
+#include "superpoint/SuperPointFrontend.hpp"
 
 int main(int argc, const char *argv[])
 {
     std::string img_path = "/home/xianjia/SuperPointCPP/assets/icl_snippet/250.png";
-    std::string weight_path = "/home/xianjia/SuperPointCPP/model/superpoint_v3_t.pt";
+    std::string weight_path = "/home/hasar/dev/ws_livox/src/ws-lidar-as-camera-odom/src/signal-image-keypoints-odom/model/superpoint_v3_t.pt";
 
     // 实例化 SingleImage (将提取的点打印在图片上的类)
     cv::Mat gray_img;
