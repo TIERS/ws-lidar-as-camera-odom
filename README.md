@@ -45,12 +45,12 @@ cd ws-lidar-as-camera-odom
 ```
 ### Update the submodules
 
-Since we have use some submodules, so we need to update the submodules.
+Since we have used some submodules, so we need to update the submodules.
 ```
 git submodule update --init --recursive
 ```
 
-### Install libstorch
+### Install libtorch
 
 ```
 cd ws-lidar-as-camera-odom/src/ && mkdir libs && cd libs
@@ -85,7 +85,7 @@ Line 79:
 ```
 
 
-### cmake build oand run our project
+### cmake build
 ```
 cd ws-lidar-as-camera-odom/
 catkin build
