@@ -24,7 +24,7 @@ message("    libraries:" ${OpenCV_LIBS})
 message("    include path:" ${OpenCV_INCLUDE_DIRS})
 
 # find torch 
-set(CMAKE_PREFIX_PATH "/home/jimmy/Downloads/Performance_comparison/ws-lidar-as-camera-odom/src/libs/libtorch/share/cmake/Torch")
+set(CMAKE_PREFIX_PATH "../libs/libtorch/share/cmake/Torch")
 find_package(Torch REQUIRED)
 
 # include pcl libraries
