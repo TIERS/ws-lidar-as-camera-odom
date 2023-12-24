@@ -28,7 +28,7 @@ For more details, please refer to our paper: [LiDAR-Generated Images Derived Key
     * cpu_monitor: A cpu monitor for monitoring the performance of our method. (After you run 'git submodule update --init --recursive')
 
 
-- `scripts`: several python scripts to print out the CPU and memory usage of our method. you don't have to run them.
+- `scripts`: several python scripts to print out the CPU and memory usage of our method. you don't necessarily have to run it
 
 
 And the original rosbag dataset we used is available at the [University of Turku servers](https://utufi.sharepoint.com/:f:/s/msteams_0ed7e9/Etwsa7m8hxhMk9H3x-K6DfUBgU3x-ZK9vMeD_V0J2mdHwA).
@@ -109,7 +109,7 @@ roslaunch kiss_icp odometry.launch topic:=/keypoint_point_cloud
 
 
 ### Run CPU_monitor
-Run CPU_monitor (You don't have to run it, it's just for monitoring the CPU and memory usage of our method)
+Run CPU_monitor (You don't necessarily have to run it., it's just for monitoring the CPU and memory usage of our method)
 ```
 roslaunch cpu_monitor cpu_monitor.launch poll_period:=1
 ```
