@@ -142,6 +142,9 @@ ISSN = {2072-4292},
 DOI = {10.3390/rs15205074}
 }
 ```
+# Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=TIERS/ws-lidar-as-camera-odom&type=Date)](https://star-history.com/#TIERS/ws-lidar-as-camera-odom&Date)
 
 ## License
 Distributed under the MIT License. See LICENSE for more information.
